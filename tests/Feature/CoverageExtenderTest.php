@@ -50,8 +50,8 @@ it('covers remaining lines in FailoverRunner', function () {
     $ref = new \ReflectionClass($runner);
     $method = $ref->getMethod('getProviderLabel');
     
-    $objWithValue = new class { public function value() { return 'val'; } };
-    $objWithValueInt = new class { public function value() { return 123; } };
+    $objWithValue = new class { public function value(): string { return 'val'; } };
+    $objWithValueInt = new class { public function value(): int { return 123; } };
     
     expect($method->invoke($runner, $objWithValue))->toBe('val')
         ->and($method->invoke($runner, $objWithValueInt))->toBe('123')
@@ -61,7 +61,7 @@ it('covers remaining lines in FailoverRunner', function () {
     config(['llm-router.logging.enabled' => false]);
     $methodLog = $ref->getMethod('log');
     $methodLog->invoke($runner, 'info', 'msg', [], [], hrtime(true)); // Should just return
-    expect(true)->toBeTrue();
+    expect(true)->toBe(true);
 });
 
 it('covers remaining lines in LLMRouterManager', function () {
@@ -76,25 +76,20 @@ it('covers remaining lines in PendingLlmRequest', function () {
         $this->markTestSkipped('Laravel AI SDK not installed.');
     }
 
-    $mockResponse = new TextResponse('Hello', new Usage(0,0,0), new Meta('openai', 'gpt-4o'));
-    $mockModel = \Mockery::mock('Laravel\\Ai\\Contracts\\Model');
-    $mockModel->shouldReceive('prompt')->andReturnSelf();
-    $mockModel->shouldReceive('generate')->andReturn($mockResponse);
-    $mockProvider = \Mockery::mock('Laravel\\Ai\\Contracts\\Provider');
-    $mockProvider->shouldReceive('model')->andReturn($mockModel);
-    \Laravel\Ai\Ai::shouldReceive('provider')->andReturn($mockProvider);
+    $mockResponse = new TextResponse('Hello', new Usage(0, 0, 0), new Meta('openai', 'gpt-4o'));
+    \Laravel\Ai\AnonymousAgent::fake(fn () => $mockResponse);
 
     $manager = app(LLMRouterManager::class);
     $request = new PendingLlmRequest($manager);
     
     // Mock the resolver to return a simple chain
-    $manager->resolveChainUsing(fn() => [['provider' => 'test', 'model' => 'test']]);
+    $manager->resolveChainUsing(fn() => [['provider' => 'openai', 'model' => 'gpt-4o']]);
     
     $result = $request->run(); // null closure
     expect($result)->toBeArray()
         ->and($result['result'])->toBeInstanceOf(TextResponse::class);
         
-    Facade::clearResolvedInstances();
+    \Laravel\Ai\AnonymousAgent::fake([]);
 });
 
 it('covers remaining lines in FailureClassifier', function () {

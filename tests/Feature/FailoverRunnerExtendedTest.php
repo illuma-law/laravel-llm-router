@@ -15,6 +15,7 @@ beforeEach(function () {
 });
 
 it('stops immediately if exception is terminal', function () {
+    /** @var mixed $logger */
     $logger = Mockery::mock(LoggerInterface::class);
     Log::shouldReceive('channel')->with('test')->andReturn($logger);
     $logger->shouldReceive('error')->once();
@@ -36,10 +37,11 @@ it('stops immediately if exception is terminal', function () {
 });
 
 it('logs success with correct duration', function () {
+    /** @var mixed $logger */
     $logger = Mockery::mock(LoggerInterface::class);
     Log::shouldReceive('channel')->with('test')->andReturn($logger);
-    $logger->shouldReceive('info')->once()->with('ai.fallback_success', Mockery::on(function ($payload) {
-        return isset($payload['duration_ms']) && is_float($payload['duration_ms']);
+    $logger->shouldReceive('info')->once()->with('ai.fallback_success', Mockery::on(function (mixed $payload) {
+        return is_array($payload) && isset($payload['duration_ms']) && is_float($payload['duration_ms']);
     }));
 
     $runner = app(FailoverRunner::class);

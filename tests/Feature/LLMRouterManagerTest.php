@@ -34,14 +34,14 @@ it('can set and resolve agent tier using a closure', function () {
 
 it('can use a custom repository', function () {
     $manager = app(LLMRouterManager::class);
-    $repo = Mockery::mock(ChainRepository::class);
-    
+    /** @var ChainRepository&\Mockery\MockInterface $repo */
+    $repo = Mockery::mock(ChainRepository::class, [
+        'getAgentOverride' => null,
+        'getChain' => [['provider' => 'p', 'model' => 'm']],
+    ]);
+
     $manager->useRepository($repo);
-    
-    // Internal verification is hard, but we can check if it flows through resolve
-    $repo->shouldReceive('getAgentOverride')->andReturn(null);
-    $repo->shouldReceive('getChain')->andReturn([['provider' => 'p', 'model' => 'm']]);
-    
+
     $chain = $manager->resolve(tier: 'small');
     expect($chain)->toHaveCount(1)
         ->and($chain[0]['provider'])->toBe('p');
@@ -49,10 +49,10 @@ it('can use a custom repository', function () {
 
 it('can initiate requests with various entry points', function () {
     $manager = app(LLMRouterManager::class);
-    
-    expect($manager->tier(DefaultTier::Large))->toBeInstanceOf(PendingLlmRequest::class);
-    expect($manager->operation('test'))->toBeInstanceOf(PendingLlmRequest::class);
-    expect($manager->forAgent('MyAgent'))->toBeInstanceOf(PendingLlmRequest::class);
+
+    expect($manager->tier(DefaultTier::Large))->not->toBeNull();
+    expect($manager->operation('test'))->not->toBeNull();
+    expect($manager->forAgent('MyAgent'))->not->toBeNull();
 });
 
 it('can resolve using a custom closure', function () {

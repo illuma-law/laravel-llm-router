@@ -32,12 +32,10 @@ it('returns the result on the first attempt if it succeeds', function () {
 });
 
 it('fails over to the next provider if a retryable exception occurs', function () {
-    /** @var MockInterface&LoggerInterface $logger */
+    /** @var mixed $logger */
     $logger = Mockery::mock(LoggerInterface::class);
     Log::shouldReceive('channel')->with('test')->andReturn($logger);
-    /** @phpstan-ignore method.notFound */
     $logger->shouldReceive('warning')->once();
-    /** @phpstan-ignore method.notFound */
     $logger->shouldReceive('info')->once();
 
     $runner = app(FailoverRunner::class);
@@ -61,12 +59,10 @@ it('fails over to the next provider if a retryable exception occurs', function (
 });
 
 it('retries the same provider if it is a transient error', function () {
-    /** @var MockInterface&LoggerInterface $logger */
+    /** @var mixed $logger */
     $logger = Mockery::mock(LoggerInterface::class);
     Log::shouldReceive('channel')->with('test')->andReturn($logger);
-    /** @phpstan-ignore method.notFound */
     $logger->shouldReceive('warning')->once();
-    /** @phpstan-ignore method.notFound */
     $logger->shouldReceive('info')->once();
 
     config(['llm-router.max_same_provider_retries' => 1]);
@@ -91,12 +87,10 @@ it('retries the same provider if it is a transient error', function () {
 });
 
 it('throws ChainExhaustedException if all attempts fail', function () {
-    /** @var MockInterface&LoggerInterface $logger */
+    /** @var mixed $logger */
     $logger = Mockery::mock(LoggerInterface::class);
     Log::shouldReceive('channel')->with('test')->andReturn($logger);
-    /** @phpstan-ignore method.notFound */
     $logger->shouldReceive('warning')->twice();
-    /** @phpstan-ignore method.notFound */
     $logger->shouldReceive('error')->once();
 
     $runner = app(FailoverRunner::class);
@@ -119,15 +113,13 @@ it('throws ChainExhaustedException if all attempts fail', function () {
         return;
     }
 
-    /** @phpstan-ignore method.notFound */
-    test()->fail('ChainExhaustedException was not thrown');
+    $this->fail('ChainExhaustedException was not thrown');
 });
 
 it('does not retry if the exception is not retryable', function () {
-    /** @var MockInterface&LoggerInterface $logger */
+    /** @var mixed $logger */
     $logger = Mockery::mock(LoggerInterface::class);
     Log::shouldReceive('channel')->with('test')->andReturn($logger);
-    /** @phpstan-ignore method.notFound */
     $logger->shouldReceive('error')->once();
 
     $runner = app(FailoverRunner::class);
@@ -151,10 +143,9 @@ it('does not retry if the exception is not retryable', function () {
 
 it('does not retry if failover is disabled', function () {
     config(['llm-router.enabled' => false]);
-    /** @var MockInterface&LoggerInterface $logger */
+    /** @var mixed $logger */
     $logger = Mockery::mock(LoggerInterface::class);
     Log::shouldReceive('channel')->with('test')->andReturn($logger);
-    /** @phpstan-ignore method.notFound */
     $logger->shouldReceive('error')->once();
 
     $runner = app(FailoverRunner::class);

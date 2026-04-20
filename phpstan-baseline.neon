@@ -1,0 +1,133 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot call method generate\(\) on class\-string\|object\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/PendingLlmRequest.php
+
+		-
+			message: '#^Cannot call method model\(\) on class\-string\|object\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/PendingLlmRequest.php
+
+		-
+			message: '#^Cannot call method prompt\(\) on class\-string\|object\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/PendingLlmRequest.php
+
+		-
+			message: '#^Cannot call static method provider\(\) on mixed\.$#'
+			identifier: staticMethod.nonObject
+			count: 1
+			path: src/PendingLlmRequest.php
+
+		-
+			message: '#^Cannot access offset ''result'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Feature/CoverageExtenderTest.php
+
+		-
+			message: '#^Cannot call method andReturn\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/CoverageExtenderTest.php
+
+		-
+			message: '#^Cannot call method andReturnSelf\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/CoverageExtenderTest.php
+
+		-
+			message: '#^Cannot call method shouldReceive\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/CoverageExtenderTest.php
+
+		-
+			message: '#^Cannot call static method shouldReceive\(\) on mixed\.$#'
+			identifier: staticMethod.nonObject
+			count: 1
+			path: tests/Feature/CoverageExtenderTest.php
+
+		-
+			message: '#^Unable to resolve the template type T in call to method IllumaLaw\\LlmRouter\\PendingLlmRequest\:\:run\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/CoverageExtenderTest.php
+
+		-
+			message: '#^Cannot call method once\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/FailoverRunnerExtendedTest.php
+
+		-
+			message: '#^Cannot call method shouldReceive\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/FailoverRunnerExtendedTest.php
+
+		-
+			message: '#^Cannot call method with\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/FailoverRunnerExtendedTest.php
+
+		-
+			message: '#^Cannot call method once\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 7
+			path: tests/Feature/FailoverRunnerTest.php
+
+		-
+			message: '#^Cannot call method shouldReceive\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 8
+			path: tests/Feature/FailoverRunnerTest.php
+
+		-
+			message: '#^Cannot call method twice\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/FailoverRunnerTest.php
+
+		-
+			message: '#^Cannot access offset ''result'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/Feature/PendingLlmRequestTest.php
+
+		-
+			message: '#^Cannot call method andReturn\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/PendingLlmRequestTest.php
+
+		-
+			message: '#^Cannot call method andReturnSelf\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/PendingLlmRequestTest.php
+
+		-
+			message: '#^Cannot call method shouldReceive\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Feature/PendingLlmRequestTest.php
+
+		-
+			message: '#^Cannot call static method shouldReceive\(\) on mixed\.$#'
+			identifier: staticMethod.nonObject
+			count: 1
+			path: tests/Feature/PendingLlmRequestTest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: tests/Feature/PendingLlmRequestTest.php

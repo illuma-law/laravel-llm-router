@@ -79,14 +79,10 @@ class PendingLlmRequest
             }
 
             if (class_exists('Laravel\\Ai\\Ai')) {
-                /** @var mixed $aiFacade */
-                $aiFacade = 'Laravel\\Ai\\Ai';
+                /** @var \Laravel\Ai\Contracts\Agent $agent */
+                $agent = \Laravel\Ai\agent();
 
-                /** @var mixed $result */
-                /** @phpstan-ignore staticMethod.nonObject */
-                $result = $aiFacade::provider($provider)->model($model)->prompt($prompt)->generate();
-
-                return $result;
+                return $agent->prompt($prompt, provider: $provider, model: $model);
             }
 
             throw new \RuntimeException('Laravel AI SDK not found. Please provide a closure to run().');
