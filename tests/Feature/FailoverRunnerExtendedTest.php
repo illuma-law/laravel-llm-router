@@ -45,5 +45,5 @@ it('logs success with correct duration', function () {
     }));
 
     $runner = app(FailoverRunner::class);
-    $runner->run([['provider' => 'p', 'model' => 'm']], fn() => 'ok');
+    $runner->run([['provider' => 'p', 'model' => 'm']], fn () => 'ok');
 });

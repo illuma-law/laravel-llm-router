@@ -95,7 +95,8 @@ it('checks provider availability from configurable paths', function () {
     expect($availability->hasCredentials('open-ai'))->toBeTrue()
         ->and($availability->hasCredentials('ollama'))->toBeTrue()
         ->and($availability->hasCredentials('azure'))->toBeTrue()
-        ->and($availability->hasCredentials(new class {
+        ->and($availability->hasCredentials(new class
+        {
             public function __toString(): string
             {
                 return 'not-scalar-internally';

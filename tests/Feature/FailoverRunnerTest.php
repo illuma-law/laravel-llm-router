@@ -10,7 +10,6 @@ use IllumaLaw\LlmRouter\FailoverRunner;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Log;
 use Mockery;
-use Mockery\MockInterface;
 use Psr\Log\LoggerInterface;
 
 beforeEach(function () {

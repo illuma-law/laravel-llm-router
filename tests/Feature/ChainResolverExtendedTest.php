@@ -7,10 +7,11 @@ namespace IllumaLaw\LlmRouter\Tests\Feature;
 use IllumaLaw\LlmRouter\ChainResolver;
 use IllumaLaw\LlmRouter\Contracts\ChainRepository;
 use Mockery;
+use Mockery\MockInterface;
 
 it('supports agent overrides from repository', function () {
     $resolver = app(ChainResolver::class);
-    /** @var ChainRepository&\Mockery\MockInterface $repo */
+    /** @var ChainRepository&MockInterface $repo */
     $repo = Mockery::mock(ChainRepository::class, [
         'getAgentOverride' => ['provider' => 'special', 'model' => 'model'],
         'getChain' => [],
@@ -24,7 +25,7 @@ it('supports agent overrides from repository', function () {
 
 it('removes duplicates from the chain', function () {
     $resolver = app(ChainResolver::class);
-    /** @var ChainRepository&\Mockery\MockInterface $repo */
+    /** @var ChainRepository&MockInterface $repo */
     $repo = Mockery::mock(ChainRepository::class, [
         'getAgentOverride' => ['provider' => 'p1', 'model' => 'm1'],
         'getChain' => [
@@ -45,7 +46,7 @@ it('returns default small tier if final chain is empty', function () {
     config()->set('llm-router.tiers.small', [['provider' => 'default', 'model' => 'small']]);
 
     $resolver = app(ChainResolver::class);
-    /** @var ChainRepository&\Mockery\MockInterface $repo */
+    /** @var ChainRepository&MockInterface $repo */
     $repo = Mockery::mock(ChainRepository::class, [
         'getAgentOverride' => null,
         'getChain' => [],

@@ -8,6 +8,7 @@ use IllumaLaw\LlmRouter\Contracts\ProviderAvailability;
 use IllumaLaw\LlmRouter\Support\ChainRowValidator;
 use IllumaLaw\LlmRouter\Support\ConfigProviderAvailability;
 use IllumaLaw\LlmRouter\Support\CooldownStore;
+use Illuminate\Contracts\Foundation\Application;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -30,11 +31,11 @@ class LLMRouterServiceProvider extends PackageServiceProvider
         $this->app->singleton(ConfigProviderAvailability::class);
         $this->app->alias(ConfigProviderAvailability::class, ProviderAvailability::class);
 
-        $this->app->singleton(LLMRouterManager::class, function (\Illuminate\Contracts\Foundation\Application $app) {
+        $this->app->singleton(LLMRouterManager::class, function (Application $app) {
             return new LLMRouterManager($app);
         });
 
-        $this->app->singleton(ChainResolver::class, function (\Illuminate\Contracts\Foundation\Application $app) {
+        $this->app->singleton(ChainResolver::class, function (Application $app) {
             /** @var LLMRouterManager $manager */
             $manager = $app->make(LLMRouterManager::class);
 

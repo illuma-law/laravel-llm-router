@@ -6,6 +6,7 @@ namespace IllumaLaw\LlmRouter;
 
 use Closure;
 use IllumaLaw\LlmRouter\Contracts\AiTier;
+use Laravel\Ai\Contracts\Agent;
 
 class PendingLlmRequest
 {
@@ -79,7 +80,7 @@ class PendingLlmRequest
             }
 
             if (class_exists('Laravel\\Ai\\Ai')) {
-                /** @var \Laravel\Ai\Contracts\Agent $agent */
+                /** @var Agent $agent */
                 $agent = \Laravel\Ai\agent();
 
                 return $agent->prompt($prompt, provider: $provider, model: $model);

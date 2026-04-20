@@ -10,4 +10,3 @@ interface ProviderAvailability
 
     public function isEnabled(mixed $provider): bool;
 }
-

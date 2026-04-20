@@ -60,4 +60,3 @@ final class CooldownStore
         return sprintf('%s:failures:%s:%s:%s', $this->keyPrefix, $profile, $provider, md5($model));
     }
 }
-

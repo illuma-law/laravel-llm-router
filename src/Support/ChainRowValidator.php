@@ -17,7 +17,6 @@ final class ChainRowValidator
     ) {}
 
     /**
-     * @param  mixed  $rows
      * @param  array<string, list<string>>  $patternsByProvider
      * @param  array<string, list<string>>  $allowlistByProvider
      * @return list<array{provider: string, model: string, enabled: bool}>
@@ -72,8 +71,8 @@ final class ChainRowValidator
 
             $normalized[] = [
                 'provider' => $provider,
-                'model'    => $model,
-                'enabled'  => $enabled,
+                'model' => $model,
+                'enabled' => $enabled,
             ];
         }
 

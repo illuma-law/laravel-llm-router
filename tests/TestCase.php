@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace IllumaLaw\LlmRouter\Tests;
 
 use IllumaLaw\LlmRouter\LLMRouterServiceProvider;
+use Laravel\Ai\AiServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -12,7 +13,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
-            \Laravel\Ai\AiServiceProvider::class,
+            AiServiceProvider::class,
             LLMRouterServiceProvider::class,
         ];
     }
@@ -35,7 +36,7 @@ class TestCase extends Orchestra
         ]);
         config()->set('llm-router.priority_override', [
             'provider' => 'ollama',
-            'model'    => 'llama3.1:70b',
+            'model' => 'llama3.1:70b',
         ]);
     }
 }
