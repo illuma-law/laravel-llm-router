@@ -20,7 +20,7 @@ it('normalizes and deduplicates chain rows', function () {
             ['provider' => 'voyage', 'model' => 'voyage-3.5-lite', 'enabled' => false],
         ],
         patternsByProvider: [
-            'openai'   => ['/^[A-Za-z0-9._:-]+$/'],
+            'openai' => ['/^[A-Za-z0-9._:-]+$/'],
             'voyageai' => ['/^[A-Za-z0-9._:-]+$/'],
         ],
     );

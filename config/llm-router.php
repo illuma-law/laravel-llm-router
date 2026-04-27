@@ -64,7 +64,7 @@ return [
     */
     'priority_override' => [
         'provider' => env('LLM_ROUTER_PRIORITY_PROVIDER', 'ollama'),
-        'model'    => env('LLM_ROUTER_PRIORITY_MODEL', 'llama3.1:70b'),
+        'model' => env('LLM_ROUTER_PRIORITY_MODEL', 'llama3.1:70b'),
     ],
 
     /*
@@ -91,7 +91,7 @@ return [
     |
     */
     'max_same_provider_retries' => env('LLM_ROUTER_MAX_RETRIES', 1),
-    'retry_delay_ms'            => env('LLM_ROUTER_RETRY_DELAY', 100),
+    'retry_delay_ms' => env('LLM_ROUTER_RETRY_DELAY', 100),
 
     /*
     |--------------------------------------------------------------------------
