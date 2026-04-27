@@ -47,7 +47,7 @@ class ChainResolver
                 return [
                     [
                         'provider' => $this->getProviderValue($override['provider']),
-                        'model' => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
+                        'model'    => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
                     ],
                 ];
             }
@@ -64,7 +64,7 @@ class ChainResolver
 
                     return [
                         'provider' => $this->getProviderValue($item['provider'] ?? ''),
-                        'model' => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
+                        'model'    => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
                     ];
                 }, $chain);
             }
@@ -81,7 +81,7 @@ class ChainResolver
 
                 $finalChain[] = [
                     'provider' => $this->getProviderValue($override['provider']),
-                    'model' => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
+                    'model'    => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
                 ];
             }
         }
@@ -95,7 +95,7 @@ class ChainResolver
 
             $normalizedItem = [
                 'provider' => $this->getProviderValue($item['provider'] ?? ''),
-                'model' => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
+                'model'    => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
             ];
 
             if ($this->isDuplicate($normalizedItem, $finalChain)) {
@@ -114,7 +114,7 @@ class ChainResolver
 
                 return [
                     'provider' => $this->getProviderValue($item['provider'] ?? ''),
-                    'model' => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
+                    'model'    => is_string($model) ? $model : (is_scalar($model) ? (string) $model : ''),
                 ];
             }, $defaultChain);
         }

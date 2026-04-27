@@ -37,7 +37,7 @@ it('can use a custom repository', function () {
     /** @var ChainRepository&MockInterface $repo */
     $repo = Mockery::mock(ChainRepository::class, [
         'getAgentOverride' => null,
-        'getChain' => [['provider' => 'p', 'model' => 'm']],
+        'getChain'         => [['provider' => 'p', 'model' => 'm']],
     ]);
 
     $manager->useRepository($repo);

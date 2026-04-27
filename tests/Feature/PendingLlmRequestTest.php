@@ -90,8 +90,6 @@ it('can perform a prompt using an agent instance', function () {
 });
 
 it('throws exception when prompt is called without SDK or closure', function () {
-    // We need to simulate Ai SDK not existing. Hard to do if it is installed.
-    // But we can check the error message if it wasn't there.
     expect(true)->toBe(true);
 })->skip('Hard to simulate class not existing');
 

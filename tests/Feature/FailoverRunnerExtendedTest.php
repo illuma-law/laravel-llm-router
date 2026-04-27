@@ -27,7 +27,7 @@ it('stops immediately if exception is terminal', function () {
     try {
         $runner->run($chain, function () use (&$attempts) {
             $attempts++;
-            throw new Exception('Terminal failure'); // FailureClassifier considers this terminal by default
+            throw new Exception('Terminal failure');
         });
     } catch (Exception) {
         //

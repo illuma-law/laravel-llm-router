@@ -20,7 +20,7 @@ class FailoverRunner
      * @param  list<array{provider: string, model: string}>  $chain
      * @param  Closure(string $provider, string $model): T  $invoke
      * @param  array<string, mixed>  $context
-     * @return array{result: T, provider: string, model: string, provider_label: string}
+     * @return array{result: T, provider: string, model: string, provider_label: string, usage: array{prompt_tokens: int, completion_tokens: int}|null}
      *
      * @throws ChainExhaustedException|Throwable
      */
@@ -54,18 +54,19 @@ class FailoverRunner
                     $result = $invoke($normalizedProvider, $model);
 
                     $this->log('info', 'ai.fallback_success', $context, [
-                        'provider' => $providerLabel,
-                        'model' => $model,
-                        'attempt_index' => $index,
+                        'provider'                  => $providerLabel,
+                        'model'                     => $model,
+                        'attempt_index'             => $index,
                         'same_provider_retry_index' => $sameProviderAttempts,
-                        'failover_count' => $failoverCount,
+                        'failover_count'            => $failoverCount,
                     ], $startTime);
 
                     return [
-                        'result' => $result,
-                        'provider' => $normalizedProvider,
-                        'model' => $model,
+                        'result'         => $result,
+                        'provider'       => $normalizedProvider,
+                        'model'          => $model,
                         'provider_label' => $providerLabel,
+                        'usage'          => $this->extractUsageFromResult($result),
                     ];
                 } catch (Throwable $e) {
                     $sameProviderAttempts++;
@@ -77,10 +78,10 @@ class FailoverRunner
 
                     if ($this->classifier->isRetryableOnSameProvider($e) && $sameProviderAttempts <= $maxSameProviderAttempts) {
                         $this->log('warning', 'ai.fallback_retry', $context, [
-                            'provider' => $providerLabel,
-                            'model' => $model,
+                            'provider'                  => $providerLabel,
+                            'model'                     => $model,
                             'same_provider_retry_index' => $sameProviderAttempts,
-                            'message' => $e->getMessage(),
+                            'message'                   => $e->getMessage(),
                         ], $startTime);
 
                         $configDelay = Config::get('llm-router.retry_delay_ms');
@@ -93,19 +94,19 @@ class FailoverRunner
                     }
 
                     $failedAttempts[] = [
-                        'provider' => $provider,
-                        'model' => $model,
+                        'provider'  => $provider,
+                        'model'     => $model,
                         'exception' => $e,
                     ];
 
                     $failoverCount++;
 
                     $this->log('warning', 'ai.fallback_attempt', $context, [
-                        'provider' => $providerLabel,
-                        'model' => $model,
+                        'provider'      => $providerLabel,
+                        'model'         => $model,
                         'attempt_index' => $index,
-                        'message' => $e->getMessage(),
-                        'next_step' => ($index + 1) < count($chain) ? 'falling back' : 'exhausted',
+                        'message'       => $e->getMessage(),
+                        'next_step'     => ($index + 1) < count($chain) ? 'falling back' : 'exhausted',
                     ], $startTime);
 
                     if ($index === count($chain) - 1) {
@@ -127,14 +128,53 @@ class FailoverRunner
     protected function logExhausted(string $provider, string $model, Throwable $e, int $index, int $retryIndex, int $failoverCount, array $context, int $startTime): void
     {
         $this->log('error', 'ai.fallback_exhausted', $context, [
-            'provider' => $provider,
-            'model' => $model,
-            'attempt_index' => $index,
+            'provider'                  => $provider,
+            'model'                     => $model,
+            'attempt_index'             => $index,
             'same_provider_retry_index' => $retryIndex,
-            'failover_count' => $failoverCount,
-            'exception_class' => get_class($e),
-            'message' => $e->getMessage(),
+            'failover_count'            => $failoverCount,
+            'exception_class'           => get_class($e),
+            'message'                   => $e->getMessage(),
         ], $startTime);
+    }
+
+    /**
+     * Extract token usage from the result object using duck-typing.
+     * Works with IlluminateHttpClientResponse, LaravelAi structured responses, and anything
+     * that exposes ->usage->promptTokens, ->usage->completionTokens, or ->usage->toArray().
+     *
+     * @return array{prompt_tokens: int, completion_tokens: int}|null
+     */
+    protected function extractUsageFromResult(mixed $result): ?array
+    {
+        if (! is_object($result)) {
+            return null;
+        }
+
+        if (! property_exists($result, 'usage')) {
+            return null;
+        }
+
+        $usage = $result->usage;
+
+        if (is_object($usage) && method_exists($usage, 'toArray')) {
+            /** @var mixed $toArray */
+            $toArray = $usage->toArray();
+
+            return [
+                'prompt_tokens'     => (int) ($toArray['prompt_tokens'] ?? 0),
+                'completion_tokens' => (int) ($toArray['completion_tokens'] ?? 0),
+            ];
+        }
+
+        if (is_object($usage) && property_exists($usage, 'promptTokens')) {
+            return [
+                'prompt_tokens'     => (int) $usage->promptTokens,
+                'completion_tokens' => (int) ($usage->completionTokens ?? 0),
+            ];
+        }
+
+        return null;
     }
 
     protected function getProviderLabel(mixed $provider): string

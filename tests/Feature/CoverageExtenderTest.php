@@ -45,10 +45,8 @@ it('covers remaining lines in FailoverRunner', function () {
     $classifier = new FailureClassifier;
     $runner = new FailoverRunner($classifier);
 
-    // Line 30: empty chain
     expect(fn () => $runner->run([], fn () => ''))->toThrow(\InvalidArgumentException::class);
 
-    // Line 150-157: getProviderLabel
     $ref = new \ReflectionClass($runner);
     $method = $ref->getMethod('getProviderLabel');
 
@@ -71,10 +69,9 @@ it('covers remaining lines in FailoverRunner', function () {
         ->and($method->invoke($runner, $objWithValueInt))->toBe('123')
         ->and($method->invoke($runner, 123))->toBe('123');
 
-    // Line 168: logging disabled
     config(['llm-router.logging.enabled' => false]);
     $methodLog = $ref->getMethod('log');
-    $methodLog->invoke($runner, 'info', 'msg', [], [], hrtime(true)); // Should just return
+    $methodLog->invoke($runner, 'info', 'msg', [], [], hrtime(true));
     expect(true)->toBe(true);
 });
 
@@ -96,10 +93,9 @@ it('covers remaining lines in PendingLlmRequest', function () {
     $manager = app(LLMRouterManager::class);
     $request = new PendingLlmRequest($manager);
 
-    // Mock the resolver to return a simple chain
     $manager->resolveChainUsing(fn () => [['provider' => 'openai', 'model' => 'gpt-4o']]);
 
-    $result = $request->run(); // null closure
+    $result = $request->run();
     expect($result)->toBeArray()
         ->and($result['result'])->toBeInstanceOf(TextResponse::class);
 
@@ -109,10 +105,8 @@ it('covers remaining lines in PendingLlmRequest', function () {
 it('covers remaining lines in FailureClassifier', function () {
     $classifier = new FailureClassifier;
 
-    // Line 29: 5xx regex
     expect($classifier->isRetryableOnSameProvider(new \Exception('Error 500')))->toBeTrue();
 
-    // Line 42: keywords
     expect($classifier->isRetryableOnSameProvider(new \Exception('Internal Server Error')))->toBeTrue();
 });
 

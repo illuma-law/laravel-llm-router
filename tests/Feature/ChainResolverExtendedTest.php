@@ -14,7 +14,7 @@ it('supports agent overrides from repository', function () {
     /** @var ChainRepository&MockInterface $repo */
     $repo = Mockery::mock(ChainRepository::class, [
         'getAgentOverride' => ['provider' => 'special', 'model' => 'model'],
-        'getChain' => [],
+        'getChain'         => [],
     ]);
     $resolver->setRepository($repo);
 
@@ -28,7 +28,7 @@ it('removes duplicates from the chain', function () {
     /** @var ChainRepository&MockInterface $repo */
     $repo = Mockery::mock(ChainRepository::class, [
         'getAgentOverride' => ['provider' => 'p1', 'model' => 'm1'],
-        'getChain' => [
+        'getChain'         => [
             ['provider' => 'p1', 'model' => 'm1'],
             ['provider' => 'p2', 'model' => 'm2'],
         ],
@@ -49,7 +49,7 @@ it('returns default small tier if final chain is empty', function () {
     /** @var ChainRepository&MockInterface $repo */
     $repo = Mockery::mock(ChainRepository::class, [
         'getAgentOverride' => null,
-        'getChain' => [],
+        'getChain'         => [],
     ]);
     $resolver->setRepository($repo);
 
