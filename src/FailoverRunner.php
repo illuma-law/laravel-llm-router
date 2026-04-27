@@ -139,10 +139,6 @@ class FailoverRunner
     }
 
     /**
-     * Extract token usage from the result object using duck-typing.
-     * Works with IlluminateHttpClientResponse, LaravelAi structured responses, and anything
-     * that exposes ->usage->promptTokens, ->usage->completionTokens, or ->usage->toArray().
-     *
      * @return array{prompt_tokens: int, completion_tokens: int}|null
      */
     protected function extractUsageFromResult(mixed $result): ?array
