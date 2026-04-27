@@ -36,7 +36,7 @@ class TestCase extends Orchestra
         ]);
         config()->set('llm-router.priority_override', [
             'provider' => 'ollama',
-            'model'    => 'llama3.1:70b',
+            'model' => 'llama3.1:70b',
         ]);
     }
 }

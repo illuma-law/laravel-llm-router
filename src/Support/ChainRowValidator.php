@@ -71,8 +71,8 @@ final class ChainRowValidator
 
             $normalized[] = [
                 'provider' => $provider,
-                'model'    => $model,
-                'enabled'  => $enabled,
+                'model' => $model,
+                'enabled' => $enabled,
             ];
         }
 
